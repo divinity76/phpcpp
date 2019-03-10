@@ -116,6 +116,14 @@ std::string str_replace ( const std::string& $search, const std::string& $replac
     size_t dummy_count;
     return str_replace($search,$replace,$subject,dummy_count);
 }
-
+std::string getcwd(void){
+	// with c++17: std::filesystem::current_path
+	// FIXME PATH_MAX blahblah
+    std::string ret(0xFFFF,'\00');
+    ::getcwd(&ret[0],ret.size());
+    ret.erase(ret.find('\00'));
+    ret.shrink_to_fit();
+    return ret;
+}
 }//</php>
 
