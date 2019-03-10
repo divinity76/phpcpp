@@ -125,7 +125,7 @@ std::string getcwd(void){
     ret.shrink_to_fit();
     return ret;
 }
-std::string strtolower ( string $string )
+std::string strtolower ( std::string $string )
 {
     std::transform($string.begin(), $string.end(), $string.begin(), ::tolower);
     return $string;
