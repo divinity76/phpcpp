@@ -26,8 +26,8 @@ std::string trim(std::string $str, const std::string& $character_mask = "\x20\x0
 // php's explode in c++
 std::vector<std::string> explode(const std::string& $delimiter,const std::string& $string, const size_t $limit = std::numeric_limits<size_t>::max());
 // php's implode() in c++
-std::string implode ( const string& $glue, const std::vector<std::string>& $pieces );
-bool file_exists ( const string& $filename );
+std::string implode ( const std::string& $glue, const std::vector<std::string>& $pieces );
+bool file_exists ( const std::string& $filename );
 std::string str_replace ( const std::string& $search , const std::string& $replace , std::string $subject, size_t &$count/*=0*/ );
 // overload to make $count optional
 std::string str_replace ( const std::string& $search, const std::string& $replace, std::string $subject);

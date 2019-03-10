@@ -79,7 +79,7 @@ std::vector<std::string> explode(const std::string& $delimiter,const std::string
     }
 }
 // php's implode() in c++
-std::string implode ( const string& $glue, const std::vector<std::string>& $pieces )
+std::string implode ( const std::string& $glue, const std::vector<std::string>& $pieces )
 {
     std::string ret;
     for(size_t i=0; i < $pieces.size(); ++i)
@@ -92,11 +92,11 @@ std::string implode ( const string& $glue, const std::vector<std::string>& $piec
     }
     return ret;
 }
-bool file_exists ( const string& $filename ){
+bool file_exists ( const std::string& $filename ){
     // this is bugged, as the file has to "exist AND be readable",
     // but in c++17 and not bugged:
     //    return std::filesystem::exists($filename);
-    ifstream f($filename.c_str());
+    std::ifstream f($filename.c_str());
     return f.good();
 }
 std::string str_replace ( const std::string& $search, const std::string& $replace, std::string $subject, size_t &$count/*=0*/)
