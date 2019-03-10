@@ -99,14 +99,22 @@ bool file_exists ( const string& $filename ){
     ifstream f($filename.c_str());
     return f.good();
 }
-std::string str_replace ( const std::string& $search , const std::string& $replace , std::string $subject, size_t &$count=0 ){
+std::string str_replace ( const std::string& $search, const std::string& $replace, std::string $subject, size_t &$count/*=0*/)
+{
     $count=0;
-    size_t pos=0;
-    while(std::string::npos != (size_t newpos=subject.find($search,pos))){
+    size_t pos=0,newpos;
+    while(std::string::npos != (newpos=$subject.find($search,pos)))
+    {
         $subject.replace(newpos,$search.size(),$replace);
         pos=newpos+$search.size();
     }
     return $subject;
+}
+// overload to make $count optional
+std::string str_replace ( const std::string& $search, const std::string& $replace, std::string $subject)
+{
+    size_t dummy_count;
+    return str_replace($search,$replace,$subject,dummy_count);
 }
 
 }//</php>
