@@ -31,6 +31,8 @@ bool file_exists ( const std::string& $filename );
 std::string str_replace ( const std::string& $search , const std::string& $replace , std::string $subject, size_t &$count/*=0*/ );
 // overload to make $count optional
 std::string str_replace ( const std::string& $search, const std::string& $replace, std::string $subject);
+std::string strtolower ( string $string );
 std::string getcwd(void);
+
 }//</php>
 
