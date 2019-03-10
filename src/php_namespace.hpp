@@ -28,6 +28,9 @@ std::vector<std::string> explode(const std::string& $delimiter,const std::string
 // php's implode() in c++
 std::string implode ( const string& $glue, const std::vector<std::string>& $pieces );
 bool file_exists ( const string& $filename );
-std::string str_replace ( const std::string& $search , const std::string& $replace , std::string $subject, size_t &$count=0 );
+std::string str_replace ( const std::string& $search , const std::string& $replace , std::string $subject, size_t &$count/*=0*/ );
+// overload to make $count optional
+std::string str_replace ( const std::string& $search, const std::string& $replace, std::string $subject);
+
 }//</php>
 
