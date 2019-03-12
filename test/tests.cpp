@@ -25,10 +25,19 @@ void *array[20]; \
 
 
 static void explode_tests(){
-	const auto lines = php::explode("lol","trololo");
-	ra(lines.size()==2)
-	ra(lines[0]=="tro")
-	ra(lines[1]=="o")
+	{
+		const auto lines = php::explode("lol","trololo");
+		ra(lines.size()==2);
+		ra(lines[0]=="tro");
+		ra(lines[1]=="o");
+	}
+	{
+		const string test="the quick brown fox";
+		const auto lines = php::explode("not on my string",test);
+		ra(lines.size()==1);
+		ra(lines[0]==test);
+	}
+	
 }
 static void run(){
 	cout << "explode() tests: " << flush;
