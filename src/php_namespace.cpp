@@ -24,7 +24,7 @@ std::string file_get_contents(const std::string& $filename)
 }
 
 // php's rtrim() in c++
-std::string rtrim ( std::string $str, const std::string& $character_mask = "\x20\x09\x0A\x0D\x00\x0B"  )
+std::string rtrim ( std::string $str, const std::string& $character_mask = std::string("\x20\x09\x0A\x0D\x00\x0B",6)  )
 {
     // optimizeme: can this be optimized to a single erase() call? probably.
     while($str.size() > 0 && $character_mask.find_first_of($str.back()) != std::string::npos)
@@ -34,7 +34,7 @@ std::string rtrim ( std::string $str, const std::string& $character_mask = "\x20
     return $str;
 }
 // php's ltrim() in c++
-std::string ltrim ( std::string $str, const std::string& $character_mask = "\x20\x09\x0A\x0D\x00\x0B"  )
+std::string ltrim ( std::string $str, const std::string& $character_mask = std::string("\x20\x09\x0A\x0D\x00\x0B",6)  )
 {
     // optimizeme: can this be optimized to a single erase() call? probably.
     while($str.size() > 0 && $character_mask.find_first_of($str.front()) != std::string::npos)
@@ -44,7 +44,7 @@ std::string ltrim ( std::string $str, const std::string& $character_mask = "\x20
     return $str;
 }
 // php's trim() in c++
-std::string trim(std::string $str, const std::string& $character_mask = "\x20\x09\x0A\x0D\x00\x0B")
+std::string trim(std::string $str, const std::string& $character_mask = std::string("\x20\x09\x0A\x0D\x00\x0B",6))
 {
     return rtrim(ltrim($str,$character_mask),$character_mask);
 }
