@@ -33,5 +33,5 @@ std::string str_replace(const std::string &$search, const std::string &$replace,
 std::string str_replace(const std::string &$search, const std::string &$replace, std::string $subject);
 std::string strtolower(std::string $string);
 std::string getcwd(void);
-
+std::string bin2hex(const std::string &$str);
 } // namespace php

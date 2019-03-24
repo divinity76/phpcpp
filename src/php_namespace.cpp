@@ -133,4 +133,19 @@ std::string strtolower(std::string $string)
     std::transform($string.begin(), $string.end(), $string.begin(), ::tolower);
     return $string;
 }
+std::string bin2hex(const std::string &$str)
+{
+    // method taken from php-src
+    const char *hexconvtab = "0123456789abcdef";
+    std::string ret;
+    ret.resize($str.size() * 2);
+    for (size_t i = 0, j = 0; i < $str.size(); ++i)
+    {
+        ret[j] = hexconvtab[$str[i] >> 4];
+        ++j;
+        ret[j] = hexconvtab[$str[i] & 15];
+        ++j;
+    }
+    return ret;
+}
 } // namespace php
