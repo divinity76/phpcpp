@@ -106,7 +106,7 @@ std::string str_replace ( const std::string& $search, const std::string& $replac
     while(std::string::npos != (newpos=$subject.find($search,pos)))
     {
         $subject.replace(newpos,$search.size(),$replace);
-        pos=newpos+$search.size();
+        pos=newpos+$replace.size();
     }
     return $subject;
 }
