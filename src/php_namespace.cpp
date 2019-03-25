@@ -134,6 +134,11 @@ std::string strtolower(std::string $string)
     std::transform($string.begin(), $string.end(), $string.begin(), ::tolower);
     return $string;
 }
+std::string strtoupper(std::string $string)
+{
+    std::transform($string.begin(), $string.end(), $string.begin(), ::toupper);
+    return $string;
+}
 std::string bin2hex(const std::string &$str)
 {
     // from https://stackoverflow.com/a/18906469/1067003
