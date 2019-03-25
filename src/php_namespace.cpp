@@ -14,6 +14,7 @@
 #include <algorithm>
 #include <unistd.h>
 #include <iomanip> // std::setfill, std::setw
+#include <map>
 // <php>
 namespace php
 {
@@ -198,6 +199,50 @@ std::string strtr(std::string $str, const std::string &$from, const std::string 
         ++pos;
     }
     return $str;
+}
+std::string strtr(const std::string &$str, const std::map<std::string, std::string> &$replace_pairs)
+{
+    //this function is not optimized, a much faster implementation is probably possible to make.
+    std::vector<std::string> keys_sorted;
+    keys_sorted.reserve($replace_pairs.size());
+    for (auto it = $replace_pairs.begin(); it != $replace_pairs.end(); ++it)
+    {
+        keys_sorted.push_back(it->first);
+    }
+    std::sort(keys_sorted.begin(), keys_sorted.end(), [](const std::string &s1, const std::string &s2) -> bool { return s1.size() > s2.size(); });
+#ifdef DEBUG_STRTR
+    for (const auto &key : keys_sorted)
+    {
+        std::cout << "\"" << key << "\" => \"" << $replace_pairs.at(key) << "\"" << std::endl;
+    }
+#endif
+    std::string ret;
+    for (size_t i = 0; i < $str.size();)
+    {
+        bool found = false;
+        for (const auto &key : keys_sorted)
+        {
+            if (i == $str.find(key, i))
+            {
+                ret.append(std::string($replace_pairs.at(key)));
+                i += key.size(); // or should it be key.size() + 1 ?
+                found = true;
+                break;
+            }
+            else
+            {
+#ifdef DEBUG_STRTR
+                std::cout << "apparently \"" << key << "\" is not the same as \"" << $str[i] << "\"" << std::endl;
+#endif
+            }
+        }
+        if (!found)
+        {
+            ret.push_back($str[i]);
+            ++i;
+        }
+    }
+    return ret;
 }
 
 } // namespace php
