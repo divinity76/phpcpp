@@ -180,4 +180,24 @@ std::string hex2bin(const std::string &$str)
     return ret;
 }
 
+std::string strtr(std::string $str, const std::string &$from, const std::string &$to)
+{
+    if ($from.size() != $to.size())
+    {
+        throw std::invalid_argument("from size and to size must be equal!");
+    }
+    size_t pos = 0;
+    for (;;)
+    {
+        pos = $str.find_first_of($from, pos);
+        if (pos == std::string::npos)
+        {
+            return $str;
+        }
+        $str[pos] = $to[$from.find_first_of($str[pos])];
+        ++pos;
+    }
+    return $str;
+}
+
 } // namespace php

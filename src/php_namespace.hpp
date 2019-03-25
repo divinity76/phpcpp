@@ -36,4 +36,5 @@ std::string strtoupper(std::string $string);
 std::string getcwd(void);
 std::string bin2hex(const std::string &$str);
 std::string hex2bin(const std::string &$str);
+std::string strtr(std::string $str, const std::string &$from, const std::string &$to);
 } // namespace php
