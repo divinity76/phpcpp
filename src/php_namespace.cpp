@@ -13,6 +13,7 @@
 #include <limits>
 #include <algorithm>
 #include <unistd.h>
+#include <iomanip>      // std::setfill, std::setw
 // <php>
 namespace php
 {
@@ -135,17 +136,16 @@ std::string strtolower(std::string $string)
 }
 std::string bin2hex(const std::string &$str)
 {
-    // method taken from php-src
-    const char *hexconvtab = "0123456789abcdef";
-    std::string ret;
-    ret.resize($str.size() * 2);
-    for (size_t i = 0, j = 0; i < $str.size(); ++i)
+    // from https://stackoverflow.com/a/18906469/1067003
+    std::string ossbuf;
+    ossbuf.reserve($str.size() * 2);
+    std::ostringstream out(std::move(ossbuf));
+    out << std::hex << std::setfill('0');
+    for (unsigned char c : $str)
     {
-        ret[j] = hexconvtab[$str[i] >> 4];
-        ++j;
-        ret[j] = hexconvtab[$str[i] & 15];
-        ++j;
+        out << std::setw(2) << uint_fast16_t(c);
     }
-    return ret;
+    return out.str();
 }
+
 } // namespace php
