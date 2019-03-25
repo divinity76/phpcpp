@@ -224,7 +224,7 @@ std::string strtr(const std::string &$str, const std::map<std::string, std::stri
         {
             if (i == $str.find(key, i))
             {
-                ret.append(std::string($replace_pairs.at(key)));
+                ret.append($replace_pairs.at(key));
                 i += key.size(); // or should it be key.size() + 1 ?
                 found = true;
                 break;
