@@ -13,7 +13,7 @@
 #include <limits>
 #include <algorithm>
 #include <unistd.h>
-#include <iomanip>      // std::setfill, std::setw
+#include <iomanip> // std::setfill, std::setw
 // <php>
 namespace php
 {
@@ -146,6 +146,33 @@ std::string bin2hex(const std::string &$str)
         out << std::setw(2) << uint_fast16_t(c);
     }
     return out.str();
+}
+std::string hex2bin(const std::string &$str)
+{
+    // from https://stackoverflow.com/a/18906469/1067003
+    std::string ret;
+    if ($str.empty())
+    {
+        return ret;
+    }
+    if (($str.size() % 2) != 0)
+    {
+        throw std::invalid_argument("Hexadecimal input string must have an even length");
+    }
+    ret.reserve(size_t($str.size() / 2));
+    for (size_t i = 0; i < $str.length(); i += 2)
+    {
+        uint_fast16_t tmp;
+        if (std::istringstream($str.substr(i, 2)) >> std::hex >> tmp)
+        {
+            ret.push_back(tmp);
+        }
+        else
+        {
+            throw std::invalid_argument("at offset " + std::to_string(i == 0 ? 0 : (i / 2)) + ": invalid hex");
+        }
+    }
+    return ret;
 }
 
 } // namespace php
