@@ -56,6 +56,11 @@ static void hex2bin_tests()
 {
 	ra(php::hex2bin(everything_hex) == everything);
 }
+static void strtr_tests1(){
+	const std::string in="aabbccXYZ";
+	std::string out=php::strtr(in,"abc","123");
+	ra(out=="112233XYZ");
+}
 static void run()
 {
 	cout << "explode() tests: " << flush;
@@ -67,6 +72,10 @@ static void run()
 	cout << "hex2bin() tests: " << flush;
 	hex2bin_tests();
 	cout << "OK" << endl;
+	cout << "strtr() tests1: " << flush;
+	strtr_tests1();
+	cout << "OK" << endl;
+	
 }
 
 int main()
