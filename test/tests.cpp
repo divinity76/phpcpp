@@ -56,10 +56,29 @@ static void hex2bin_tests()
 {
 	ra(php::hex2bin(everything_hex) == everything);
 }
-static void strtr_tests1(){
-	const std::string in="aabbccXYZ";
-	std::string out=php::strtr(in,"abc","123");
-	ra(out=="112233XYZ");
+static void strtr_tests1()
+{
+	const std::string in = "aabbccXYZ";
+	std::string out = php::strtr(in, "abc", "123");
+	ra(out == "112233XYZ");
+}
+static void strtr_tests2()
+{
+	{
+		const std::string in = "aabbccXYZ";
+		std::string out = php::strtr(in, {{"a", "1"}, {"b", "2"}, {"c", "3"}});
+		ra(out == "112233XYZ");
+	}
+	{
+		const std::string in = "aabbccXYZ";
+		std::string out = php::strtr(in, {{"a", "TROLO"}, {"b", ""}, {"c", ""}});
+		ra(out == "TROLOTROLOXYZ");
+	}
+	{
+		const std::string in = "aabbcc";
+		std::string out = php::strtr(in, {{"a", ""}, {"b", ""}, {"c", ""},{"not","inhere"}});
+		ra(out.empty());
+	}
 }
 static void run()
 {
@@ -75,7 +94,9 @@ static void run()
 	cout << "strtr() tests1: " << flush;
 	strtr_tests1();
 	cout << "OK" << endl;
-	
+	cout << "strtr() tests2: " << flush;
+	strtr_tests2();
+	cout << "OK" << endl;
 }
 
 int main()
