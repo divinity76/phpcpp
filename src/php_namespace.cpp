@@ -123,7 +123,7 @@ std::string str_replace(const std::string &$search, const std::string &$replace,
 std::string getcwd(void)
 {
     // with c++17: std::filesystem::current_path
-    // FIXME PATH_MAX blahblah
+    // about why i'm not using PATH_MAX: http://insanecoding.blogspot.com/2007/11/pathmax-simply-isnt.html
     std::string ret(0xFFFF, '\00');
     ::getcwd(&ret[0], ret.size());
     ret.erase(ret.find('\00'));

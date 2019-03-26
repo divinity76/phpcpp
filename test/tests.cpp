@@ -76,7 +76,7 @@ static void strtr_tests2()
 	}
 	{
 		const std::string in = "aabbcc";
-		std::string out = php::strtr(in, {{"a", ""}, {"b", ""}, {"c", ""},{"not","inhere"}});
+		std::string out = php::strtr(in, {{"a", ""}, {"b", ""}, {"c", ""}, {"not", "inhere"}});
 		ra(out.empty());
 	}
 }
