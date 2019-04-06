@@ -147,9 +147,9 @@ std::string bin2hex(const std::string &$str)
     ossbuf.reserve($str.size() * 2);
     std::ostringstream out(std::move(ossbuf));
     out << std::hex << std::setfill('0');
-    for (unsigned char c : $str)
+    for (char c : $str)
     {
-        out << std::setw(2) << uint_fast16_t(c);
+        out << std::setw(2) << uint_fast16_t(((unsigned char)c));
     }
     return out.str();
 }
@@ -171,7 +171,7 @@ std::string hex2bin(const std::string &$str)
         uint_fast16_t tmp;
         if (std::istringstream($str.substr(i, 2)) >> std::hex >> tmp)
         {
-            ret.push_back(tmp);
+            ret.push_back(char(tmp));
         }
         else
         {
