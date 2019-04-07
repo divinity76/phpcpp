@@ -38,4 +38,5 @@ std::string bin2hex(const std::string &$str);
 std::string hex2bin(const std::string &$str);
 std::string strtr(std::string $str, const std::string &$from, const std::string &$to);
 std::string strtr(const std::string &$str, const std::map<std::string, std::string> &$replace_pairs);
+double microtime(const bool $get_as_double = false);
 } // namespace php

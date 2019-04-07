@@ -80,6 +80,19 @@ static void strtr_tests2()
 		ra(out.empty());
 	}
 }
+static void microtime_true_tests(void)
+{
+	const double t = php::microtime(true);
+	if (t < 1262386800)
+	{
+		std::cerr << "WARNING: microtime(true) believes that it's earlier than year 2010! ..." << std::endl;
+	}
+	if (t > 4070991600)
+	{
+		std::cerr << "WARNING: microtime(true) believes that it's after year 2099! ..." << std::endl;
+	}
+}
+
 static void run()
 {
 	cout << "explode() tests: " << flush;
@@ -96,6 +109,9 @@ static void run()
 	cout << "OK" << endl;
 	cout << "strtr() tests2: " << flush;
 	strtr_tests2();
+	cout << "OK" << endl;
+	cout << "microtime(true) tests: " << flush;
+	microtime_true_tests();
 	cout << "OK" << endl;
 }
 

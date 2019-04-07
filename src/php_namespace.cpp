@@ -15,6 +15,7 @@
 #include <unistd.h>
 #include <iomanip> // std::setfill, std::setw
 #include <map>
+#include <chrono>
 // <php>
 namespace php
 {
@@ -243,6 +244,14 @@ std::string strtr(const std::string &$str, const std::map<std::string, std::stri
         }
     }
     return ret;
+}
+double microtime(const bool $get_as_double = false)
+{
+    if (!$get_as_double)
+    {
+        throw std::logic_error("microtime(false) is not yet implemented! sorry");
+    }
+    return (double(std::chrono::duration_cast<std::chrono::microseconds>(std::chrono::system_clock::now().time_since_epoch()).count()) / double(1000000));
 }
 
 } // namespace php
