@@ -92,7 +92,22 @@ static void microtime_true_tests(void)
 		std::cerr << "WARNING: microtime(true) believes that it's after year 2099! ..." << std::endl;
 	}
 }
-
+static void number_format_tests(void)
+{
+	//	cout << " supposed to be ???: " << number_format(1337/double(6),99) << (number_format(1337/double(6),99) == "222.833" ? " OK" : " FAIL" ) << std::endl;
+	ra(php::number_format(137, 0) == "137");
+	ra(php::number_format(1337 / double(6), 0) == "223");
+	ra(php::number_format(1337 / double(6), 3) == "222.833");
+	ra(php::number_format(0, 9) == "0.000000000");
+	ra(php::number_format(0) == "0");
+	ra(php::number_format(1, 0) == "1");
+	ra(php::number_format(13, 0) == "13");
+	ra(php::number_format(137, 0) == "137");
+	ra(php::number_format(1337, 0) == "1,337");
+	ra(php::number_format(13337, 0) == "13,337");
+	ra(php::number_format(133337, 0) == "133,337");
+	ra(php::number_format(13333337, 0) == "13,333,337");
+}
 static void run()
 {
 	cout << "explode() tests: " << flush;
@@ -112,6 +127,9 @@ static void run()
 	cout << "OK" << endl;
 	cout << "microtime(true) tests: " << flush;
 	microtime_true_tests();
+	cout << "OK" << endl;
+	cout << "number_format() tests: " << flush;
+	number_format_tests();
 	cout << "OK" << endl;
 }
 
