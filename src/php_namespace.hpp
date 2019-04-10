@@ -13,6 +13,7 @@
 #include <limits>
 #include <algorithm>
 #include <unistd.h>
+#include <map>
 // <php>
 namespace php
 {
