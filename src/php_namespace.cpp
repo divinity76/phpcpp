@@ -26,8 +26,6 @@ std::string file_get_contents(const std::string &$filename)
     ss << std::ifstream($filename).rdbuf();
     return ss.str();
 }
-
-// php's rtrim() in c++
 std::string rtrim(std::string $str, const std::string &$character_mask = std::string("\x20\x09\x0A\x0D\x00\x0B", 6))
 {
     // optimizeme: can this be optimized to a single erase() call? probably.
@@ -37,7 +35,6 @@ std::string rtrim(std::string $str, const std::string &$character_mask = std::st
     }
     return $str;
 }
-// php's ltrim() in c++
 std::string ltrim(std::string $str, const std::string &$character_mask = std::string("\x20\x09\x0A\x0D\x00\x0B", 6))
 {
     // optimizeme: can this be optimized to a single erase() call? probably.
@@ -47,12 +44,10 @@ std::string ltrim(std::string $str, const std::string &$character_mask = std::st
     }
     return $str;
 }
-// php's trim() in c++
 std::string trim(std::string $str, const std::string &$character_mask = std::string("\x20\x09\x0A\x0D\x00\x0B", 6))
 {
     return rtrim(ltrim($str, $character_mask), $character_mask);
 }
-// php's explode in c++
 std::vector<std::string> explode(const std::string &$delimiter, const std::string &$string, const size_t $limit = std::numeric_limits<size_t>::max())
 {
     if ($delimiter.empty())
@@ -82,7 +77,6 @@ std::vector<std::string> explode(const std::string &$delimiter, const std::strin
         }
     }
 }
-// php's implode() in c++
 std::string implode(const std::string &$glue, const std::vector<std::string> &$pieces)
 {
     std::string ret;
