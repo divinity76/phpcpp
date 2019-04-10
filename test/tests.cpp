@@ -5,6 +5,8 @@
 #include "../src/php_namespace.cpp"
 using namespace std;
 
+#define BIN_STRING(s) std::string(s, sizeof(s) - 1)
+
 /*
 #define macrobacktrace() { \
 void *array[20]; \
@@ -21,6 +23,12 @@ void *array[20]; \
 // #define ra2(exp,...){if(!(exp)){myerror(1,errno,__VA_ARGS__);}}
 */
 // "runtime assert"
+
+void dump_string(const std::string &str)
+{
+	// string(3) "lol"
+	std::cerr << "string(" << str.size() << "): \"" << str << "\"" << std::endl;
+}
 #define ra(exp)                                                                                      \
 	{                                                                                                \
 		if (!(exp))                                                                                  \
@@ -52,6 +60,9 @@ static void explode_tests()
 static void bin2hex_tests()
 {
 	ra(php::bin2hex(everything) == everything_hex);
+	ra(php::bin2hex("THE QUICK BROWN FOX JUMPS OVER THE LAZY DOG") == "54484520515549434b2042524f574e20464f58204a554d5053204f56455220544845204c415a5920444f47");
+	ra(php::bin2hex(BIN_STRING("\x00")) == "00");
+	ra(php::bin2hex(BIN_STRING("\xFF")) == "ff");
 }
 static void hex2bin_tests()
 {
@@ -81,6 +92,32 @@ static void strtr_tests2()
 		ra(out.empty());
 	}
 }
+static void trim_tests(void)
+{
+	ra(everything.front() == '\x00');
+	ra(everything.back() == '\xFF');
+	//<ltrim>
+	ra(php::ltrim(everything) != everything);
+	ra(php::ltrim(everything, "X") == everything);
+	ra(php::ltrim(everything, "") == everything);
+	ra(php::ltrim(everything, BIN_STRING("\x00")) == everything.substr(1));
+	//</ltrim>
+	//<rtrim>
+	ra(php::rtrim(everything) == everything);
+	ra(php::rtrim(everything, "X") == everything);
+	ra(php::rtrim(everything, "") == everything);
+	ra(php::rtrim(everything, BIN_STRING("\xFF")) == everything.substr(0, everything.length() - 1));
+	//</rtrim>
+	//<trim>
+	ra(php::trim(everything) != everything);
+	ra(php::trim(everything) == everything.substr(1));
+	ra(php::trim(everything, "X") == everything);
+	ra(php::trim(everything, "") == everything);
+	ra(php::trim(everything, BIN_STRING("\x00")) == everything.substr(1));
+	ra(php::trim(everything, BIN_STRING("\x00")) == everything.substr(1));
+	//</trim>
+}
+
 static void microtime_true_tests(void)
 {
 	const double t = php::microtime(true);
@@ -125,6 +162,9 @@ static void run()
 	cout << "OK" << endl;
 	cout << "strtr() tests2: " << flush;
 	strtr_tests2();
+	cout << "OK" << endl;
+	cout << "trim() ltrim() rtrim() tests: " << std::flush;
+	trim_tests();
 	cout << "OK" << endl;
 	cout << "microtime(true) tests: " << flush;
 	microtime_true_tests();
