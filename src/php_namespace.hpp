@@ -1,18 +1,5 @@
-// todo: trim includes - includes were extracted from another project and includes were not trimed
-#include <iostream>
-#include <string>
-#include <fstream>
-// when c++17 becomes available..
-//#include <filesystem>
-#include <sstream>
-#include <string>
 #include <vector>
-#include <sstream>
-#include <utility>
-#include <exception>
 #include <limits>
-#include <algorithm>
-#include <unistd.h>
 #include <map>
 // <php>
 namespace php
