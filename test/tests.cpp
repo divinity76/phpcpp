@@ -1,8 +1,8 @@
 // TODO: make a windows-friendly version
 #include <iostream>
+#include "../src/php_namespace.hpp"
 //#include <error.h> // gcc-specific..
 //#include <execinfo.h>//linux-specific..
-#include "../src/php_namespace.hpp"
 using namespace std;
 
 #define BIN_STRING(s) std::string(s, sizeof(s) - 1)
