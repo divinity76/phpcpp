@@ -114,7 +114,6 @@ std::string getcwd(void)
 #if __cplusplus > 201703L
     return std::string(std::filesystem::current_path().string());
 #else
-    // with c++17: std::filesystem::current_path
     // about why i'm not using PATH_MAX: http://insanecoding.blogspot.com/2007/11/pathmax-simply-isnt.html
     std::string ret(0xFFFF, '\x00');
     while (::getcwd(&ret[0], ret.size()) == null)
