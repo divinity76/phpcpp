@@ -5,7 +5,7 @@
 #include <unistd.h>
 #include <iomanip> // std::setfill, std::setw
 #include <map>
-#if __cplusplus > 201703L
+#if __cplusplus >= 201703L
 #include <filesystem>
 #endif
 #include <chrono>
@@ -111,7 +111,7 @@ std::string str_replace(const std::string &$search, const std::string &$replace,
 }
 std::string getcwd(void)
 {
-#if __cplusplus > 201703L
+#if __cplusplus >= 201703L
     return std::string(std::filesystem::current_path().string());
 #else
     // about why i'm not using PATH_MAX: http://insanecoding.blogspot.com/2007/11/pathmax-simply-isnt.html
