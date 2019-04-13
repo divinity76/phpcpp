@@ -116,7 +116,7 @@ std::string getcwd(void)
 #else
     // about why i'm not using PATH_MAX: http://insanecoding.blogspot.com/2007/11/pathmax-simply-isnt.html
     std::string ret(0xFFFF, '\x00');
-    while (::getcwd(&ret[0], ret.size()) == null)
+    while (::getcwd(&ret[0], ret.size()) == nullptr)
     {
         ret.resize(ret.size() * 2);
     }
