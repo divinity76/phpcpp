@@ -5,6 +5,9 @@
 #include <unistd.h>
 #include <iomanip> // std::setfill, std::setw
 #include <map>
+#if __cplusplus > 201703L
+#include <filesystem>
+#endif
 #include <chrono>
 #include <cassert>
 // <php>
@@ -108,13 +111,20 @@ std::string str_replace(const std::string &$search, const std::string &$replace,
 }
 std::string getcwd(void)
 {
+#if __cplusplus > 201703L
+    return std::string(std::filesystem::current_path().string());
+#else
     // with c++17: std::filesystem::current_path
     // about why i'm not using PATH_MAX: http://insanecoding.blogspot.com/2007/11/pathmax-simply-isnt.html
-    std::string ret(0xFFFF, '\00');
-    ::getcwd(&ret[0], ret.size());
+    std::string ret(0xFFFF, '\x00');
+    while (::getcwd(&ret[0], ret.size()) == null)
+    {
+        ret.resize(ret.size() * 2);
+    }
     ret.erase(ret.find('\00'));
     ret.shrink_to_fit();
     return ret;
+#endif
 }
 std::string strtolower(std::string $string)
 {
