@@ -120,8 +120,14 @@ std::string getcwd(void)
     {
         ret.resize(ret.size() * 2);
     }
-    ret.erase(ret.find('\00'));
-    ret.shrink_to_fit();
+    {
+        const auto nullpos = ret.find('\x00');
+        if (nullpos != std::string::npos)
+        {
+            ret.erase(nullpos);
+            ret.shrink_to_fit();
+        }
+    }
     return ret;
 #endif
 }
