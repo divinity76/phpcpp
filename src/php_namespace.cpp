@@ -271,5 +271,35 @@ std::string number_format(const double $number, const size_t $decimals = 0, cons
     }
     return ret;
 }
+std::string urlencode(const std::string &$str)
+{
+    std::string ossbuf;
+    ossbuf.reserve($str.size() + (10 * 2)); // assume no more than 10 characters needs to be escaped (faster if true)
+    std::ostringstream out(std::move(ossbuf));
+    out << std::hex << std::uppercase;//  << std::setfill('\x00');// << std::setw(1);
+    for (const char c : $str)
+    {
+        if (::isalnum(int(c)) || c == '-' || c == '_' || c == '.') // not sure why isalnum want int.. ¯\_(ツ)_/¯
+        {
+            out << c;
+        }
+        else if (c == ' ')
+        {
+            out << '+';
+        }
+        else
+        {
+            out << '%';
+            const unsigned char uc = static_cast<unsigned char>(c);
+            if (uc < '\x10')
+            {
+                //i bet there is a better way to do this..
+                out << '0';
+            }
+            out << uint_fast16_t(uc);
+        }
+    }
+    return out.str();
+}
 
 } // namespace php
