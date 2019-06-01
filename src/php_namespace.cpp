@@ -85,11 +85,13 @@ std::string implode(const std::string &$glue, const std::vector<std::string> &$p
 }
 bool file_exists(const std::string &$filename)
 {
-    // this is bugged, as the file has to "exist AND be readable",
-    // but in c++17 and not bugged:
-    //    return std::filesystem::exists($filename);
+#if __cplusplus >= 201703L
+    return std::string(std::filesystem::current_path().string());
+#else
+    // this is probably bugged, as the file has to "exist AND be readable",
     std::ifstream f($filename.c_str());
     return f.good();
+#endif
 }
 std::string str_replace(const std::string &$search, const std::string &$replace, std::string $subject, size_t &$count /*=0*/)
 {
