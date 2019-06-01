@@ -86,7 +86,7 @@ std::string implode(const std::string &$glue, const std::vector<std::string> &$p
 bool file_exists(const std::string &$filename)
 {
 #if __cplusplus >= 201703L
-    return std::string(std::filesystem::current_path().string());
+    return std::filesystem::exists($filename);
 #else
     // this is probably bugged, as the file has to "exist AND be readable",
     std::ifstream f($filename.c_str());
