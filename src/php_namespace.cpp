@@ -16,9 +16,12 @@ namespace php
 std::string file_get_contents(const std::string &$filename)
 {
     std::ostringstream ss;
-    ss << std::ifstream($filename).rdbuf();
+    std::ifstream ifs($filename,std::ifstream::binary);
+    ifs.exceptions ( std::ifstream::failbit | std::ifstream::badbit );
+    ss << ifs.rdbuf();
     return ss.str();
 }
+
 std::string rtrim(std::string $str, const std::string &$character_mask = std::string("\x20\x09\x0A\x0D\x00\x0B", 6))
 {
     // optimizeme: can this be optimized to a single erase() call? probably.
