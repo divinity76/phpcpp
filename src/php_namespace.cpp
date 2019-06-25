@@ -10,6 +10,7 @@
 #endif
 #include <chrono>
 #include <cassert>
+
 // <php>
 namespace php
 {
@@ -268,15 +269,16 @@ std::string number_format(const double $number, const size_t $decimals = 0, cons
         oss << std::fixed << $number;
         ret = oss.str();
     }
-    const auto dotpos = ($decimals <= 0 ? std::string::npos : ret.find("."));
+    auto dotpos = ($decimals <= 0 ? std::string::npos : ret.find("."));
     assert($decimals <= 0 || dotpos != std::string::npos);
     {
         uint_fast8_t last = 0;
-        for (size_t i = ($decimals <= 0 ? ret.size() : dotpos); i > 0; --i)
+        for (size_t i = ($decimals <= 0 ? ret.size() : (dotpos)); i > 0; --i)
         {
             if (last == 3)
             {
                 ret.insert(i, $thousands_sep);
+                dotpos+=$thousands_sep.size();
                 last = 1;
             }
             else
@@ -287,6 +289,7 @@ std::string number_format(const double $number, const size_t $decimals = 0, cons
     }
     if ($decimals > 0)
     {
+        (void)$dec_point;
         ret.replace(dotpos, 1, $dec_point);
     }
     return ret;
