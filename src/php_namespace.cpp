@@ -289,7 +289,6 @@ std::string number_format(const double $number, const size_t $decimals = 0, cons
     }
     if ($decimals > 0)
     {
-        (void)$dec_point;
         ret.replace(dotpos, 1, $dec_point);
     }
     return ret;
