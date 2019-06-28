@@ -26,4 +26,5 @@ double microtime(const bool $get_as_double = false);
 std::string number_format(const double $number, const size_t $decimals = 0, const std::string &$dec_point = ".", const std::string &$thousands_sep = ",");
 std::string urlencode(const std::string &$str);
 std::string rawurlencode(const std::string &$str);
+std::string escapeshellarg(const std::string &$arg);
 } // namespace php

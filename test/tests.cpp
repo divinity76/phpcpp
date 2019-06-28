@@ -203,6 +203,19 @@ static void rawurlencode_tests(void)
 		ra(php::rawurlencode(q) == q_answer);
 	}
 }
+static void escapeshellarg_tests(void){
+	ra(php::escapeshellarg("foo") == "'foo'");
+	ra(php::escapeshellarg("foo\nbar") == "'foo\nbar'");
+	ra(php::escapeshellarg("foo\nbar'baz") == "'foo\nbar'\\''baz'");
+	ra(php::escapeshellarg("'''''") == "''\\'''\\'''\\'''\\'''\\'''");
+	try{
+		// escaping null characters is impossible and is supposed to throw a runtime_error.
+		php::escapeshellarg(everything);
+		ra(false);//error here if the above did not throw a runtime_error. (this line should be unreachable)
+	}catch(std::runtime_error& err){
+		// this is expected.
+	}
+}
 static void run()
 {
 	cout << "explode() tests: " << flush;
@@ -235,6 +248,9 @@ static void run()
 	cout << "rawurlencode() tests: " << flush;
 	rawurlencode_tests();
 	cout << "OK" << endl;
+	cout << "escapeshellarg() tests: " << flush;
+	escapeshellarg_tests();
+	cout << "OK" << endl;	
 }
 
 int main()
