@@ -16,11 +16,25 @@ namespace php
 {
 std::string file_get_contents(const std::string &$filename)
 {
-    std::ostringstream ss;
-    std::ifstream ifs($filename,std::ifstream::binary);
-    ifs.exceptions ( std::ifstream::failbit | std::ifstream::badbit );
-    ss << ifs.rdbuf();
-    return ss.str();
+    std::ifstream file($filename, std::ifstream::binary);
+    file.exceptions(std::ifstream::failbit | std::ifstream::badbit);
+    file.seekg(0, std::istream::end);
+    const std::streampos ssize = file.tellg();
+    if (ssize < 0)
+    {
+        // can't get size for some reason, fallback to slower "just read everything"
+        // because i dont trust that we could seek back/fourth in the original stream,
+        // im creating a new stream.
+        std::ifstream file($filename, std::ifstream::binary);
+        file.exceptions(std::ifstream::failbit | std::ifstream::badbit);
+        std::ostringstream ss;
+        ss << file.rdbuf();
+        return ss.str();
+    }
+    file.seekg(0, std::istream::beg);
+    std::string result(ssize, 0);
+    file.read(&result[0], ssize);
+    return result;
 }
 
 std::string rtrim(std::string $str, const std::string &$character_mask = std::string("\x20\x09\x0A\x0D\x00\x0B", 6))
