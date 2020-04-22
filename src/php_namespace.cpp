@@ -400,5 +400,6 @@ std::string random_bytes(const size_t bytes){
     }
     assert(bytes==bytes_written);
     return ret;
-}#endif
+}
+#endif
 } // namespace php
