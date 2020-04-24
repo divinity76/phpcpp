@@ -11,6 +11,8 @@
 #include <chrono>
 #include <cassert>
 #include <random>
+#include <cstddef>
+
 
 // <php>
 namespace php
