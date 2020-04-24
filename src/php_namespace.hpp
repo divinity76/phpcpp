@@ -30,4 +30,5 @@ std::string urlencode(const std::string &$str);
 std::string rawurlencode(const std::string &$str);
 std::string escapeshellarg(const std::string &$arg);
 std::string random_bytes(std::size_t bytes);
+int64_t random_int(const int64_t min, const int64_t max);
 } // namespace php
