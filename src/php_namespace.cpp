@@ -10,11 +10,7 @@
 #endif
 #include <chrono>
 #include <cassert>
-#ifdef __linux__
-// for random_bytes - TODO: windows/macos support
-#include <sys/random.h>
-#endif
-
+#include <random>
 
 // <php>
 namespace php
@@ -383,23 +379,27 @@ std::string escapeshellarg(const std::string &$arg){
     ret+="'";
     return ret;
 }
-#ifdef __linux__
-// for random_bytes - TODO: windows/macos support
-std::string random_bytes(const size_t bytes){
-    // optimizeme: figure out how to construct the string with un-initialized bytes,
-    // now we're basically using calloc() when all we need is malloc()
-    std::string ret(bytes,0);
-    size_t bytes_written=0;
-    while(bytes_written < bytes){
-        const ssize_t written_now=getrandom(&ret[bytes_written], bytes-bytes_written, 0);
-        if(written_now < 0){
-            // TODO: better error message, check why it failed
-            throw std::runtime_error("getrandom() failed, TODO: better error message, check why it failed");
-        }
-        bytes_written+=written_now;
-    }
-    assert(bytes==bytes_written);
-    return ret;
+std::string random_bytes(std::size_t size) {
+	// thread_local static is not needed, it makes the code faster, but use more ram/resources, o well
+	// (for example it may contain a fopen() handle to /dev/urandom )
+	thread_local static std::random_device rd;
+	decltype(rd()) inner_buf;
+	// optimizeme: figure out how to construct a string of uninitialized bytes,
+	// the zero-initialization is just a waste of cpu
+	// (think of it like this: we're using calloc() when we just need malloc())
+	std::string ret(size, 0);
+	char *buf = (char*) ret.data();
+	while (size >= sizeof(inner_buf)) {
+		size -= sizeof(inner_buf);
+		inner_buf = rd();
+		std::memcpy(buf, &inner_buf, sizeof(inner_buf));
+		buf += sizeof(inner_buf);
+	}
+	if (size > 0) {
+		inner_buf = rd();
+		std::memcpy(buf, &inner_buf, size);
+	}
+	return ret;
 }
-#endif
+
 } // namespace php
