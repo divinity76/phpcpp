@@ -27,4 +27,5 @@ std::string number_format(const double $number, const size_t $decimals = 0, cons
 std::string urlencode(const std::string &$str);
 std::string rawurlencode(const std::string &$str);
 std::string escapeshellarg(const std::string &$arg);
+int64_t random_int(const int64_t min, const int64_t max);
 } // namespace php
