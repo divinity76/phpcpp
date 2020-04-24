@@ -2,6 +2,8 @@
 #include <vector>
 #include <limits>
 #include <map>
+#include <cstddef>
+
 // <php>
 namespace php
 {
@@ -27,5 +29,5 @@ std::string number_format(const double $number, const size_t $decimals = 0, cons
 std::string urlencode(const std::string &$str);
 std::string rawurlencode(const std::string &$str);
 std::string escapeshellarg(const std::string &$arg);
-std::string random_bytes(const size_t bytes);
+std::string random_bytes(std::size_t bytes);
 } // namespace php
