@@ -10,6 +10,7 @@
 #endif
 #include <chrono>
 #include <cassert>
+#include <random>
 
 // <php>
 namespace php
@@ -378,5 +379,14 @@ std::string escapeshellarg(const std::string &$arg){
     ret+="'";
     return ret;
 }
+
+int64_t random_int(const int64_t min, const int64_t max) {
+	// thread_local static is not needed, it makes the code faster, but use more ram/resources, o well
+	// (for example it may contain a fopen() handle to /dev/urandom )
+	thread_local static std::random_device rd;
+	std::uniform_int_distribution < int64_t > dist(min, max);
+	return dist(rd);
+}
+
 
 } // namespace php
