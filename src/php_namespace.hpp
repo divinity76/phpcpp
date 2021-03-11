@@ -8,6 +8,7 @@
 namespace php
 {
 std::string file_get_contents(const std::string &$filename);
+size_t file_put_contents(const std::string &$filename, const std::string &$data);
 std::string rtrim(std::string $str, const std::string &$character_mask = std::string("\x20\x09\x0A\x0D\x00\x0B", 6));
 std::string ltrim(std::string $str, const std::string &$character_mask = std::string("\x20\x09\x0A\x0D\x00\x0B", 6));
 std::string trim(std::string $str, const std::string &$character_mask = std::string("\x20\x09\x0A\x0D\x00\x0B", 6));

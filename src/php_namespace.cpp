@@ -12,6 +12,7 @@
 #include <cassert>
 #include <random>
 #include <cstddef>
+#include <cstring>
 
 // <php>
 namespace php
@@ -34,10 +35,21 @@ std::string file_get_contents(const std::string &$filename)
         return ss.str();
     }
     file.seekg(0, std::istream::beg);
-    std::string result(ssize, 0);
-    file.read(&result[0], ssize);
+    std::string result(size_t(ssize), 0);
+    file.read(&result[0], std::streamsize(ssize));
     return result;
 }
+
+size_t file_put_contents(const std::string &$filename, const std::string &$data){
+    // TODO: implement flags/flock/append
+    // right now just pretend $flags = 0
+    std::ofstream file($filename, std::ofstream::out | std::ofstream::binary | std::ofstream::trunc);
+    file.exceptions(std::ofstream::failbit | std::ofstream::badbit);
+    file.write($data.data(), std::streamsize($data.size()));
+    // well.. should throw exception if everything wasn't written, so this is correct, right?
+    return $data.size();
+}
+
 
 std::string rtrim(std::string $str, const std::string &$character_mask = std::string("\x20\x09\x0A\x0D\x00\x0B", 6))
 {
