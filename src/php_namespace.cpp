@@ -17,6 +17,9 @@
 // <php>
 namespace php
 {
+#include <string>
+#include <fstream>
+#include <sstream>
 std::string file_get_contents(const std::string &$filename)
 {
     std::ifstream file($filename, std::ifstream::binary);
@@ -40,6 +43,8 @@ std::string file_get_contents(const std::string &$filename)
     return result;
 }
 
+#include <string>
+#include <fstream>
 size_t file_put_contents(const std::string &$filename, const std::string &$data){
     // TODO: implement flags/flock/append
     // right now just pretend $flags = 0
@@ -50,7 +55,7 @@ size_t file_put_contents(const std::string &$filename, const std::string &$data)
     return $data.size();
 }
 
-
+#include <string>
 std::string rtrim(std::string $str, const std::string &$character_mask = std::string("\x20\x09\x0A\x0D\x00\x0B", 6))
 {
     // optimizeme: can this be optimized to a single erase() call? probably.
@@ -60,6 +65,8 @@ std::string rtrim(std::string $str, const std::string &$character_mask = std::st
     }
     return $str;
 }
+
+#include <string>
 std::string ltrim(std::string $str, const std::string &$character_mask = std::string("\x20\x09\x0A\x0D\x00\x0B", 6))
 {
     // optimizeme: can this be optimized to a single erase() call? probably.
@@ -69,10 +76,17 @@ std::string ltrim(std::string $str, const std::string &$character_mask = std::st
     }
     return $str;
 }
+
+#include <string>
 std::string trim(std::string $str, const std::string &$character_mask = std::string("\x20\x09\x0A\x0D\x00\x0B", 6))
 {
     return rtrim(ltrim($str, $character_mask), $character_mask);
 }
+
+#include <string>
+#include <vector>
+#include <limits>
+#include <stdexcept>
 std::vector<std::string> explode(const std::string &$delimiter, const std::string &$string, const size_t $limit = std::numeric_limits<size_t>::max())
 {
     if ($delimiter.empty())
@@ -102,6 +116,9 @@ std::vector<std::string> explode(const std::string &$delimiter, const std::strin
         }
     }
 }
+
+#include <string>
+#include <vector>
 std::string implode(const std::string &$glue, const std::vector<std::string> &$pieces)
 {
     std::string ret;
@@ -115,6 +132,12 @@ std::string implode(const std::string &$glue, const std::vector<std::string> &$p
     }
     return ret;
 }
+
+#if __cplusplus >= 201703L
+#include <filesystem>
+#else
+#include <fstream>
+#endif
 bool file_exists(const std::string &$filename)
 {
 #if __cplusplus >= 201703L
@@ -125,6 +148,8 @@ bool file_exists(const std::string &$filename)
     return f.good();
 #endif
 }
+
+#include <string>
 std::string str_replace(const std::string &$search, const std::string &$replace, std::string $subject, size_t &$count /*=0*/)
 {
     $count = 0;
@@ -143,6 +168,13 @@ std::string str_replace(const std::string &$search, const std::string &$replace,
     size_t dummy_count;
     return str_replace($search, $replace, $subject, dummy_count);
 }
+
+#if __cplusplus >= 201703L
+#include <filesystem>
+#else
+#include <unistd.h>
+#endif
+#include <string>
 std::string getcwd(void)
 {
 #if __cplusplus >= 201703L
@@ -165,16 +197,26 @@ std::string getcwd(void)
     return ret;
 #endif
 }
+#include <string>
+#include <algorithm>
+#include <cctype>
 std::string strtolower(std::string $string)
 {
     std::transform($string.begin(), $string.end(), $string.begin(), ::tolower);
     return $string;
 }
+#include <string>
+#include <algorithm>
+#include <cctype>
 std::string strtoupper(std::string $string)
 {
     std::transform($string.begin(), $string.end(), $string.begin(), ::toupper);
     return $string;
 }
+
+#include <string>
+#include <sstring>
+#include <iomanip>
 std::string bin2hex(const std::string &$str)
 {
     // from https://stackoverflow.com/a/18906469/1067003
@@ -188,6 +230,11 @@ std::string bin2hex(const std::string &$str)
     }
     return out.str();
 }
+
+#include <string>
+#include <sstream>
+#include <stdexcept>
+#include <ios>
 std::string hex2bin(const std::string &$str)
 {
     // from https://stackoverflow.com/a/18906469/1067003
@@ -216,6 +263,8 @@ std::string hex2bin(const std::string &$str)
     return ret;
 }
 
+#include <stdexcept>
+#include <string>
 std::string strtr(std::string $str, const std::string &$from, const std::string &$to)
 {
     if ($from.size() != $to.size())
@@ -235,6 +284,11 @@ std::string strtr(std::string $str, const std::string &$from, const std::string 
     }
     return $str;
 }
+
+#include <vector>
+#include <map>
+#include <algorithm>
+#include <string>
 std::string strtr(const std::string &$str, const std::map<std::string, std::string> &$replace_pairs)
 {
     //this function is not optimized, a much faster implementation is probably possible to make.
@@ -279,6 +333,9 @@ std::string strtr(const std::string &$str, const std::map<std::string, std::stri
     }
     return ret;
 }
+
+#include <stdexcept>
+#include <chrono>
 double microtime(const bool $get_as_double = false)
 {
     if (!$get_as_double)
@@ -287,6 +344,10 @@ double microtime(const bool $get_as_double = false)
     }
     return (double(std::chrono::duration_cast<std::chrono::microseconds>(std::chrono::system_clock::now().time_since_epoch()).count()) / double(1000000));
 }
+
+#include <string>
+#include <sstream>
+#include <cassert>
 std::string number_format(const double $number, const size_t $decimals = 0, const std::string &$dec_point = ".", const std::string &$thousands_sep = ",")
 {
     // i don't know how to implement this function "in a good way"
@@ -321,6 +382,9 @@ std::string number_format(const double $number, const size_t $decimals = 0, cons
     }
     return ret;
 }
+
+#include <string>
+#include <sstream>
 std::string urlencode(const std::string &$str)
 {
     std::string ossbuf;
@@ -351,6 +415,9 @@ std::string urlencode(const std::string &$str)
     }
     return out.str();
 }
+
+#include <string>
+#include <sstream>
 std::string rawurlencode(const std::string &$str)
 {
     std::string ossbuf;
@@ -377,6 +444,9 @@ std::string rawurlencode(const std::string &$str)
     }
     return out.str();
 }
+
+#include <string>
+#include <stdexcept>
 std::string escapeshellarg(const std::string &$arg){
     std::string ret="'";
     ret.reserve($arg.length()+100+2); // ¯\_(ツ)_/¯
@@ -392,6 +462,10 @@ std::string escapeshellarg(const std::string &$arg){
     ret+="'";
     return ret;
 }
+
+#include <string>
+#include <cstring>
+#include <random>
 std::string random_bytes(std::size_t size) {
 	// thread_local static is not needed, it makes the code faster, but use more ram/resources, o well
 	// (for example it may contain a fopen() handle to /dev/urandom )
@@ -415,6 +489,7 @@ std::string random_bytes(std::size_t size) {
 	return ret;
 }
 
+#include <random>
 int64_t random_int(const int64_t min, const int64_t max) {
 	// thread_local static is not needed, it makes the code faster, but use more ram/resources, o well
 	// (for example it may contain a fopen() handle to /dev/urandom )
