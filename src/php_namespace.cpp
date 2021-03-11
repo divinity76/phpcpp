@@ -14,6 +14,11 @@
 #include <cstddef>
 #include <cstring>
 
+#if __cplusplus < 201703L
+#include <sys/stat.h>
+#include <sys/types.h>
+#endif
+
 // <php>
 namespace php
 {
@@ -215,7 +220,7 @@ std::string strtoupper(std::string $string)
 }
 
 #include <string>
-#include <sstring>
+#include <sstream>
 #include <iomanip>
 std::string bin2hex(const std::string &$str)
 {
@@ -496,6 +501,30 @@ int64_t random_int(const int64_t min, const int64_t max) {
 	thread_local static std::random_device rd;
 	std::uniform_int_distribution < int64_t > dist(min, max);
 	return dist(rd);
+}
+
+#include <string>
+#if __cplusplus >= 201703L
+#include <filesystem>
+#else
+#include <cstring>
+#include <stdexcept>
+#include <sys/stat.h>
+#include <sys/types.h>
+#endif
+bool mkdir(const std::string &$pathname, const int $mode = 0777){
+    // todo: support int $mode, bool $recursive
+    #if __cplusplus >= 201703L
+    std::filesystem::create_directory($pathname);
+    return true;
+    #else
+        const int success = ::mkdir($pathname.c_str(), mode_t($mode));
+        if(success == 0){
+            return true;
+        }
+        const std::string error_string = "mkdir failed, pathname: " + $pathname + " errno: " + std::to_string(errno) + " strerror: " + std::string(strerror(errno));
+        throw std::runtime_error(error_string);
+    #endif
 }
 
 

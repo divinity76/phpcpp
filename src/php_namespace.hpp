@@ -32,4 +32,5 @@ std::string rawurlencode(const std::string &$str);
 std::string escapeshellarg(const std::string &$arg);
 std::string random_bytes(std::size_t bytes);
 int64_t random_int(const int64_t min, const int64_t max);
+bool mkdir(const std::string &$pathname, const int $mode = 0777);
 } // namespace php
