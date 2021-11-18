@@ -454,7 +454,7 @@ std::string rawurlencode(const std::string &$str)
 #include <stdexcept>
 std::string escapeshellarg(const std::string &$arg){
     std::string ret="'";
-    ret.reserve($arg.length()+100+2); // ¯\_(ツ)_/¯
+    ret.reserve($arg.length()+20); // ¯\_(ツ)_/¯
     for(size_t i=0;i<$arg.length();++i){
         if($arg[i]=='\00'){
             throw std::runtime_error("argument contains null bytes, impossible to escape null bytes!");
