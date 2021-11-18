@@ -33,4 +33,6 @@ namespace php
     std::string random_bytes(std::size_t bytes);
     int64_t random_int(const int64_t min, const int64_t max);
     bool mkdir(const std::string &$pathname, const int $mode = 0777);
+    std::string shell_exec(const std::string &cmd, int &return_code);
+    std::string shell_exec(const std::string &cmd);
 } // namespace php

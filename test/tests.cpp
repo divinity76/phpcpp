@@ -34,7 +34,7 @@ void dump_string(const std::string &str)
 		if (!(exp))                                                                                  \
 		{                                                                                            \
 			const std::string s(std::string(__FILE__) + ":" + std::to_string(__LINE__) + " error!"); \
-			std::cerr << s  << std::endl;                                                             \
+			std::cerr << s << std::endl;                                                             \
 			throw std::runtime_error(s);                                                             \
 		}                                                                                            \
 	}
@@ -145,7 +145,7 @@ static void number_format_tests(void)
 	ra(php::number_format(13337, 0) == "13,337");
 	ra(php::number_format(133337, 0) == "133,337");
 	ra(php::number_format(13333337, 0) == "13,333,337");
-	ra(php::number_format(0,3) == "0.000");
+	ra(php::number_format(0, 3) == "0.000");
 	ra(php::number_format(1, 3) == "1.000");
 	ra(php::number_format(13, 3) == "13.000");
 	ra(php::number_format(137, 3) == "137.000");
@@ -153,7 +153,6 @@ static void number_format_tests(void)
 	ra(php::number_format(13337, 3) == "13,337.000");
 	ra(php::number_format(133337, 3) == "133,337.000");
 	ra(php::number_format(13333337, 3) == "13,333,337.000");
-
 }
 static void urlencode_tests(void)
 {
@@ -203,19 +202,30 @@ static void rawurlencode_tests(void)
 		ra(php::rawurlencode(q) == q_answer);
 	}
 }
-static void escapeshellarg_tests(void){
+static void escapeshellarg_tests(void)
+{
 	ra(php::escapeshellarg("foo") == "'foo'");
 	ra(php::escapeshellarg("foo\nbar") == "'foo\nbar'");
 	ra(php::escapeshellarg("foo\nbar'baz") == "'foo\nbar'\\''baz'");
 	ra(php::escapeshellarg("'''''") == "''\\'''\\'''\\'''\\'''\\'''");
-	try{
+	try
+	{
 		// escaping null characters is impossible and is supposed to throw a runtime_error.
 		php::escapeshellarg(everything);
-		ra(false);//error here if the above did not throw a runtime_error. (this line should be unreachable)
-	}catch(std::runtime_error& err){
+		ra(false); //error here if the above did not throw a runtime_error. (this line should be unreachable)
+	}
+	catch (std::runtime_error &err)
+	{
 		// this is expected.
 	}
 }
+#ifdef __linux__
+static void shell_exec_tests(void)
+{
+	ra(php::shell_exec("echo 'foo'") == "foo\n");
+}
+#endif
+
 static void run()
 {
 	cout << "explode() tests: " << flush;
@@ -250,7 +260,12 @@ static void run()
 	cout << "OK" << endl;
 	cout << "escapeshellarg() tests: " << flush;
 	escapeshellarg_tests();
-	cout << "OK" << endl;	
+	cout << "OK" << endl;
+#ifdef __linux__
+	cout << "shell_exec() tests: " << flush;
+	shell_exec_tests();
+	cout << "OK" << endl;
+#endif
 }
 
 int main()
