@@ -223,20 +223,16 @@ namespace php
 #include <string>
 #include <sstream>
 #include <iomanip>
-    std::string bin2hex(const std::string &$str)
+std::string bin2hex(const std::string_view bin)
+{
+    std::string result(bin.size() * 2, '\x00');
+    for (size_t i = 0; i < bin.size(); ++i)
     {
-        // from https://stackoverflow.com/a/18906469/1067003
-        std::string ossbuf;
-        ossbuf.reserve($str.size() * 2);
-        std::ostringstream out(std::move(ossbuf));
-        out << std::hex << std::setfill('0');
-        for (char c : $str)
-        {
-            out << std::setw(2) << uint_fast16_t(((unsigned char)c));
-        }
-        return out.str();
+        result[2 * i] = "0123456789ABCDEF"[bin[i] >> 4];
+        result[(2 * i) + 1] = "0123456789ABCDEF"[bin[i] & 0x0F];
     }
-
+    return result;
+}
 #include <string>
 #include <sstream>
 #include <stdexcept>
