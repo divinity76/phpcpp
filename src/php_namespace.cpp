@@ -220,50 +220,42 @@ namespace php
         return $string;
     }
 
-#include <string>
-#include <sstream>
-#include <iomanip>
 std::string bin2hex(const std::string_view bin)
 {
     std::string result(bin.size() * 2, '\x00');
     for (size_t i = 0; i < bin.size(); ++i)
     {
-        result[2 * i] = "0123456789ABCDEF"[bin[i] >> 4];
-        result[(2 * i) + 1] = "0123456789ABCDEF"[bin[i] & 0x0F];
+        const uint8_t byte = bin[i];
+        result[2 * i] = "0123456789ABCDEF"[byte >> 4];
+        result[(2 * i) + 1] = "0123456789ABCDEF"[byte & 0x0F];
     }
     return result;
 }
-#include <string>
-#include <sstream>
-#include <stdexcept>
-#include <ios>
-    std::string hex2bin(const std::string &$str)
+#include<stdexcept>
+std::string hex2bin(const std::string_view hex)
+{
+    auto hexValue = [](uint8_t chr) -> uint8_t
     {
-        // from https://stackoverflow.com/a/18906469/1067003
-        std::string ret;
-        if ($str.empty())
-        {
-            return ret;
-        }
-        if (($str.size() % 2) != 0)
-        {
-            throw std::invalid_argument("Hexadecimal input string must have an even length");
-        }
-        ret.reserve(size_t($str.size() / 2));
-        for (size_t i = 0; i < $str.length(); i += 2)
-        {
-            uint_fast16_t tmp;
-            if (std::istringstream($str.substr(i, 2)) >> std::hex >> tmp)
-            {
-                ret.push_back(char(tmp));
-            }
-            else
-            {
-                throw std::invalid_argument("at offset " + std::to_string(i == 0 ? 0 : (i / 2)) + ": invalid hex");
-            }
-        }
-        return ret;
+        if (chr >= '0' && chr <= '9')
+            return chr - '0';
+        if (chr >= 'A' && chr <= 'F')
+            return chr - 'A' + 10;
+        if (chr >= 'a' && chr <= 'f')
+            return chr - 'a' + 10;
+        throw std::invalid_argument("Invalid hex character: " + chr);
+    };
+    if (hex.size() % 2 != 0)
+        throw std::invalid_argument("Invalid hex string: odd length");
+
+    std::string result(hex.size() / 2, '\x00');
+    for (size_t i = 0; i < result.size(); ++i)
+    {
+        uint8_t high = hexValue(hex[2 * i]);
+        uint8_t low = hexValue(hex[2 * i + 1]);
+        result[i] = static_cast<uint8_t>((high << 4) | low);
     }
+    return result;
+}
 
 #include <stdexcept>
 #include <string>
